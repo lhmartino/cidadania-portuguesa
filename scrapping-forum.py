@@ -42,6 +42,8 @@ for categoria in categorias:
     if(categoria.text in lista_categorias_pular):
         continue
 
+    print("#categoria atual: ", categoria.text)
+
     #Lê página de discussões da categoria
     response = requests.get(categoria['href'])
     soup = BeautifulSoup(response.text, "lxml")
@@ -89,6 +91,8 @@ for categoria in categorias:
                 pergunta = soup.find("div", class_="Discussion").find("div", class_="Message userContent").text.replace("<br>", "\n")
 
             discussion_id = soup.find("div", class_=["Item", "ItemDiscussion", 'Role_Member']).get('id')
+
+            print("### Discussão atual: ", titulo + " - " + discussion_id)
 
             discussao_dict["pergunta"] = pergunta
 
@@ -150,7 +154,8 @@ for categoria in categorias:
               discussao_dict["respostas"] = (respostas_list)
 
             #print(discussao_dict)
-            save_json(discussion_id, discussao_dict)
+            #save_json(discussion_id, discussao_dict)
 
             #adiciona discussão na lista
             discussoes_list.append(discussao_dict)
+            save_json("forum", discussoes_list)
